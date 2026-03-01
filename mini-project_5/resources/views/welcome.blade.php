@@ -71,6 +71,16 @@
             <a href="{{ route('admin.users') }}"><button class="dashboard_button">User List</button></a> |
             <a href="{{ route('admin.settings') }}"><button class="dashboard_button">Settings</button></a>
         </div>
+
+        <div>
+            @if(session('loggedIn'))
+                <p>You are logged in!</p>
+                <a href="{{ route('logout') }}"><button class="dashboard_button">Log Out</button></a>
+            @else
+                <p>You are logged out!</p>
+                <a href="{{ route('login') }}"><button class="dashboard_button">Log In</button></a>
+            @endif
+        </div>
     </main>
 
     <footer class="footer">
