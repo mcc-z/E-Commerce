@@ -16,8 +16,7 @@ class StudentController extends Controller
         return view('students.create');
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
@@ -27,6 +26,22 @@ class StudentController extends Controller
 
         Student::create($request->all());
 
+        return redirect('/students');
+    }
+
+    public function edit($id) {
+        $student = Student::findOrFail($id);
+        return view('students.edit', compact('student'));
+    }
+
+    public function update(Request $request, $id) {
+        $student = Student::findOrFail($id);
+        $student->update($request->all());
+        return redirect('/students');
+    }
+
+    public function destroy($id) {
+        Student::destroy($id);
         return redirect('/students');
     }
 }
