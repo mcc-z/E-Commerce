@@ -86,7 +86,7 @@
                             <form action="{{ route('admin.books.destroy', $book) }}" method="POST"
                                   onsubmit="return confirm('Delete this book?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-danger btn-xs"><i class="fas fa-trash"></i></button>
+                                <button type="button" class="btn btn-danger btn-xs" onclick="openModal('{{ route('admin.books.destroy', $book) }}')"><i class="fas fa-trash"></i></button>
                             </form>
                         </div>
                     </td>
@@ -101,4 +101,28 @@
     <div style="padding:8px 16px 16px;">{{ $books->links('pagination::simple-default') }}</div>
     @endif
 </div>
+
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal-content">
+        <h3>Confirm Deletion</h3>
+        <p>Are you sure you want to delete this book?</p>
+        <form method="POST" id="deleteForm">
+            @csrf @method('DELETE')
+            <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
+                <button type="button" onclick="closeModal()" class="btn btn-outline">Cancel</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openModal(url) {
+        document.getElementById('deleteForm').action = url;
+        document.getElementById('deleteModal').style.display = 'flex';
+    }
+    function closeModal() {
+        document.getElementById('deleteModal').style.display = 'none';
+    }
+</script>
 @endsection

@@ -125,7 +125,7 @@ class BookController extends Controller
         if ($book->cover_image) Storage::disk('public')->delete($book->cover_image);
 
         ActivityLog::log('delete_book', "Deleted book: {$book->title} (ISBN: {$book->isbn})");
-        $book->delete();
+        $book->forceDelete();
 
         return redirect()->route('admin.books.index')->with('success', 'Book deleted successfully.');
     }
@@ -168,7 +168,7 @@ class BookController extends Controller
         if ($category->books()->count() > 0) {
             return back()->with('error', 'Cannot delete a category that has books.');
         }
-        $category->delete();
+        $category->forceDelete();
         return back()->with('success', 'Category deleted.');
     }
 }

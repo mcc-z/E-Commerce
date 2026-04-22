@@ -101,11 +101,7 @@
                     </td>
                     <td>
                         @if(in_array($borrow->status, ['active','overdue']))
-                        <form action="{{ route('admin.borrows.return', $borrow) }}" method="POST"
-                              onsubmit="return confirm('Confirm book return?')">
-                            @csrf
-                            <button class="btn btn-success btn-xs"><i class="fas fa-undo"></i> Return</button>
-                        </form>
+                        <button type="button" class="btn btn-success btn-xs" onclick="openReturnModal('{{ route('admin.borrows.return', $borrow) }}')"><i class="fas fa-undo"></i> Return</button>
                         @endif
                     </td>
                 </tr>
@@ -119,4 +115,32 @@
     <div style="padding:8px 16px 16px;">{{ $borrows->links('pagination::simple-default') }}</div>
     @endif
 </div>
+
+<div id="returnModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:white; border-radius:16px; padding:32px; max-width:400px; width:90%;">
+        <h3 style="font-family:'DM Serif Display',serif; color:var(--navy); margin-bottom:12px;">Confirm Book Return</h3>
+        <p style="color:var(--text-muted); margin-bottom:24px;">Confirm that the book has been returned to the library?</p>
+        <form method="POST" id="returnForm">
+            @csrf
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+                <button type="button" class="btn btn-outline" onclick="closeReturnModal()">Cancel</button>
+                <button type="submit" class="btn btn-success">Return</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openReturnModal(url) {
+        document.getElementById('returnForm').action = url;
+        document.getElementById('returnModal').style.display = 'flex';
+    }
+    function closeReturnModal() {
+        document.getElementById('returnModal').style.display = 'none';
+    }
+    document.getElementById('returnModal').addEventListener('click', e => {
+        if (e.target === document.getElementById('returnModal')) closeReturnModal();
+    });
+</script>
+
 @endsection

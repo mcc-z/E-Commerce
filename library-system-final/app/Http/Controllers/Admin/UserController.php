@@ -99,7 +99,7 @@ class UserController extends Controller
         }
 
         ActivityLog::log('delete_user', "Admin deleted user: {$user->name} ({$user->member_id})");
-        $user->delete();
+        $user->forceDelete();
 
         return redirect()->route('admin.users.index')->with('success', 'User deleted.');
     }

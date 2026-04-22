@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'LibraryMS') — LibraryMS</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title><?php echo $__env->yieldContent('title', 'LibraryMS'); ?> — LibraryMS</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -610,14 +610,14 @@
         }
     </style>
 
-    @stack('styles')
+    <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
 <body>
 
-{{-- SIDEBAR --}}
+
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-        <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('user.dashboard') }}">
+        <a href="<?php echo e(auth()->user()->isAdmin() ? route('admin.dashboard') : route('user.dashboard')); ?>">
             <div class="logo-icon"><i class="fas fa-book-open"></i></div>
             <div class="logo-text">
                 LibraryMS
@@ -627,152 +627,152 @@
     </div>
 
     <div class="sidebar-user">
-        <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}">
+        <img src="<?php echo e(auth()->user()->avatar_url); ?>" alt="<?php echo e(auth()->user()->name); ?>">
         <div class="sidebar-user-info">
-            <div class="name">{{ auth()->user()->name }}</div>
-            <div class="role">{{ auth()->user()->isAdmin() ? 'Administrator' : 'Member · ' . auth()->user()->member_id }}</div>
+            <div class="name"><?php echo e(auth()->user()->name); ?></div>
+            <div class="role"><?php echo e(auth()->user()->isAdmin() ? 'Administrator' : 'Member · ' . auth()->user()->member_id); ?></div>
         </div>
     </div>
 
     <nav class="sidebar-nav">
-        @if(auth()->user()->isAdmin())
-            {{-- ADMIN NAV --}}
+        <?php if(auth()->user()->isAdmin()): ?>
+            
             <div class="nav-section-title">Overview</div>
             <div class="nav-item">
-                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                <a href="<?php echo e(route('admin.dashboard')); ?>" class="<?php echo e(request()->routeIs('admin.dashboard') ? 'active' : ''); ?>">
                     <i class="fas fa-chart-line"></i> Dashboard
                 </a>
             </div>
 
             <div class="nav-section-title">Library</div>
             <div class="nav-item">
-                <a href="{{ route('admin.books.index') }}" class="{{ request()->routeIs('admin.books.*') ? 'active' : '' }}">
+                <a href="<?php echo e(route('admin.books.index')); ?>" class="<?php echo e(request()->routeIs('admin.books.*') ? 'active' : ''); ?>">
                     <i class="fas fa-books"></i> Books
                 </a>
             </div>
             <div class="nav-item">
-                <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                <a href="<?php echo e(route('admin.categories.index')); ?>" class="<?php echo e(request()->routeIs('admin.categories.*') ? 'active' : ''); ?>">
                     <i class="fas fa-tags"></i> Categories
                 </a>
             </div>
 
             <div class="nav-section-title">Circulation</div>
             <div class="nav-item">
-                <a href="{{ route('admin.borrows.index') }}" class="{{ request()->routeIs('admin.borrows.*') ? 'active' : '' }}">
+                <a href="<?php echo e(route('admin.borrows.index')); ?>" class="<?php echo e(request()->routeIs('admin.borrows.*') ? 'active' : ''); ?>">
                     <i class="fas fa-hand-holding-heart"></i> Borrows
-                    @php $overdue = \App\Models\Borrow::where('status','overdue')->count() @endphp
-                    @if($overdue > 0)
-                        <span class="nav-badge">{{ $overdue }}</span>
-                    @endif
+                    <?php $overdue = \App\Models\Borrow::where('status','overdue')->count() ?>
+                    <?php if($overdue > 0): ?>
+                        <span class="nav-badge"><?php echo e($overdue); ?></span>
+                    <?php endif; ?>
                 </a>
             </div>
 
             <div class="nav-section-title">Members</div>
             <div class="nav-item">
-                <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                <a href="<?php echo e(route('admin.users.index')); ?>" class="<?php echo e(request()->routeIs('admin.users.*') ? 'active' : ''); ?>">
                     <i class="fas fa-users"></i> Members
                 </a>
             </div>
 
             <div class="nav-section-title">Finance</div>
             <div class="nav-item">
-                <a href="{{ route('admin.payments.index') }}" class="{{ request()->routeIs('admin.payments.*') ? 'active' : '' }}">
+                <a href="<?php echo e(route('admin.payments.index')); ?>" class="<?php echo e(request()->routeIs('admin.payments.*') ? 'active' : ''); ?>">
                     <i class="fas fa-money-bill-wave"></i> Payments & Fines
                 </a>
             </div>
 
             <div class="nav-section-title">Account</div>
             <div class="nav-item">
-                <a href="{{ route('admin.profile') }}" class="{{ request()->routeIs('admin.profile*') ? 'active' : '' }}">
+                <a href="<?php echo e(route('admin.profile')); ?>" class="<?php echo e(request()->routeIs('admin.profile*') ? 'active' : ''); ?>">
                     <i class="fas fa-user-circle"></i> My Profile
                 </a>
             </div>
-        @else
-            {{-- USER NAV --}}
+        <?php else: ?>
+            
             <div class="nav-section-title">My Library</div>
             <div class="nav-item">
-                <a href="{{ route('user.dashboard') }}" class="{{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
+                <a href="<?php echo e(route('user.dashboard')); ?>" class="<?php echo e(request()->routeIs('user.dashboard') ? 'active' : ''); ?>">
                     <i class="fas fa-gauge-high"></i> Dashboard
                 </a>
             </div>
             <div class="nav-item">
-                <a href="{{ route('user.books.index') }}" class="{{ request()->routeIs('user.books.*') ? 'active' : '' }}">
+                <a href="<?php echo e(route('user.books.index')); ?>" class="<?php echo e(request()->routeIs('user.books.*') ? 'active' : ''); ?>">
                     <i class="fas fa-search"></i> Browse Books
                 </a>
             </div>
 
             <div class="nav-section-title">My Activity</div>
             <div class="nav-item">
-                <a href="{{ route('user.borrows.index') }}" class="{{ request()->routeIs('user.borrows.*') ? 'active' : '' }}">
+                <a href="<?php echo e(route('user.borrows.index')); ?>" class="<?php echo e(request()->routeIs('user.borrows.*') ? 'active' : ''); ?>">
                     <i class="fas fa-book-reader"></i> My Borrows
-                    @php $active = auth()->user()->activeBorrows()->count() @endphp
-                    @if($active > 0)
-                        <span class="nav-badge" style="background:var(--gold);color:var(--navy);">{{ $active }}</span>
-                    @endif
+                    <?php $active = auth()->user()->activeBorrows()->count() ?>
+                    <?php if($active > 0): ?>
+                        <span class="nav-badge" style="background:var(--gold);color:var(--navy);"><?php echo e($active); ?></span>
+                    <?php endif; ?>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="{{ route('user.fines.index') }}" class="{{ request()->routeIs('user.fines.*') ? 'active' : '' }}">
+                <a href="<?php echo e(route('user.fines.index')); ?>" class="<?php echo e(request()->routeIs('user.fines.*') ? 'active' : ''); ?>">
                     <i class="fas fa-receipt"></i> Fines & Payments
-                    @if(auth()->user()->outstanding_fines > 0)
-                        <span class="nav-badge">${{ number_format(auth()->user()->outstanding_fines, 2) }}</span>
-                    @endif
+                    <?php if(auth()->user()->outstanding_fines > 0): ?>
+                        <span class="nav-badge">$<?php echo e(number_format(auth()->user()->outstanding_fines, 2)); ?></span>
+                    <?php endif; ?>
                 </a>
             </div>
 
             <div class="nav-section-title">Account</div>
             <div class="nav-item">
-                <a href="{{ route('user.profile') }}" class="{{ request()->routeIs('user.profile*') ? 'active' : '' }}">
+                <a href="<?php echo e(route('user.profile')); ?>" class="<?php echo e(request()->routeIs('user.profile*') ? 'active' : ''); ?>">
                     <i class="fas fa-user-circle"></i> My Profile
                 </a>
             </div>
-        @endif
+        <?php endif; ?>
     </nav>
 
     <div class="sidebar-footer">
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
+        <form action="<?php echo e(route('logout')); ?>" method="POST">
+            <?php echo csrf_field(); ?>
             <button type="submit"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
         </form>
     </div>
 </aside>
 
-{{-- MAIN --}}
+
 <main class="main-content">
     <header class="topbar">
-        <div class="topbar-title">@yield('page-title', 'Dashboard')</div>
+        <div class="topbar-title"><?php echo $__env->yieldContent('page-title', 'Dashboard'); ?></div>
         <div class="topbar-actions">
-            @if(!auth()->user()->isAdmin())
-                <a href="{{ route('user.books.index') }}" class="topbar-btn" title="Browse Books">
+            <?php if(!auth()->user()->isAdmin()): ?>
+                <a href="<?php echo e(route('user.books.index')); ?>" class="topbar-btn" title="Browse Books">
                     <i class="fas fa-search"></i>
                 </a>
-            @endif
-            <a href="{{ auth()->user()->isAdmin() ? route('admin.profile') : route('user.profile') }}" class="topbar-btn">
+            <?php endif; ?>
+            <a href="<?php echo e(auth()->user()->isAdmin() ? route('admin.profile') : route('user.profile')); ?>" class="topbar-btn">
                 <i class="fas fa-user"></i>
             </a>
         </div>
     </header>
 
     <div class="page-body">
-        {{-- Flash messages --}}
-        @if(session('success'))
-            <div class="alert alert-success"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> {{ session('error') }}</div>
-        @endif
-        @if($errors->any())
+        
+        <?php if(session('success')): ?>
+            <div class="alert alert-success"><i class="fas fa-check-circle"></i> <?php echo e(session('success')); ?></div>
+        <?php endif; ?>
+        <?php if(session('error')): ?>
+            <div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> <?php echo e(session('error')); ?></div>
+        <?php endif; ?>
+        <?php if($errors->any()): ?>
             <div class="alert alert-error">
                 <i class="fas fa-exclamation-triangle"></i>
                 <div>
-                    @foreach($errors->all() as $error)
-                        <div>{{ $error }}</div>
-                    @endforeach
+                    <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <div><?php echo e($error); ?></div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
-        @yield('content')
+        <?php echo $__env->yieldContent('content'); ?>
     </div>
 </main>
 
@@ -786,6 +786,7 @@
         });
     }, 4000);
 </script>
-@stack('scripts')
+<?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
+<?php /**PATH D:\Programs\E-Commerce\library-system-final\resources\views/layouts/app.blade.php ENDPATH**/ ?>
