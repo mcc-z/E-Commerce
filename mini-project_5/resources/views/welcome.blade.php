@@ -73,6 +73,10 @@
         </div>
 
         <div>
+            <p>You can only open the User List and Admin Settings page if you are logged in. Click the button below to change your login status!</p>
+        </div>
+
+        <div>
             @if(session('loggedIn'))
                 <p>You are logged in!</p>
                 <a href="{{ route('logout') }}"><button class="dashboard_button">Log Out</button></a>
